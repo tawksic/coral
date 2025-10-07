@@ -2,6 +2,8 @@ services:
   webapp:
     image: harbor.tawksic.com/h-webapp/autoscale-api
     network_mode: host
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
     build:
       context: .
       dockerfile: Dockerfile-app
