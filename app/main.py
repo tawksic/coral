@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from utils import get_version
+from utils import get_version, get_container_memory_stats, get_container_cpu_stats
 
 app = FastAPI()
 
@@ -14,3 +14,12 @@ def health_check():
 @app.get("/version")
 def version():
     return {"release_version": get_version()}
+
+@app.get("/container-memory")
+def container_memory():
+    return {"memory_usage": get_container_memory_stats()}
+
+@app.get("/container-cpu")
+def container_cpu():
+    return {"cpu_usage": get_container_cpu_stats()}
+
