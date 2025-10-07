@@ -1,5 +1,13 @@
 services:
   webapp:
     image: harbor.tawksic.com/h-webapp/autoscale-api
-    ports:
-      - "80:80"
+    network_mode: host
+    build:
+      context: .
+      dockerfile: Dockerfile-app
+  jenkins:
+    image: harbor.tawksic.com/h-webapp/jenkins
+    network_mode: host
+    build:
+      context: .
+      dockerfile: Dockerfile-jenkins
