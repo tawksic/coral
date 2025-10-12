@@ -33,6 +33,7 @@ kubectl rollout status deployment coral -n $NAMESPACE --timeout=60s
 
 echo "Deployment complete"
 echo ""
+
 kubectl port-forward service/coral $LOCAL_PORT:80 -n $NAMESPACE > /dev/null 2>&1 &
 PF_PID=$!
 echo "Port-forward running in background (PID: $PF_PID)"

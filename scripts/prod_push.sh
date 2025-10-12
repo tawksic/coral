@@ -8,12 +8,11 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 PROJECT_ROOT="$SCRIPT_DIR/.."
 NAMESPACE="coral-prod"
 LOCAL_PORT=9080
-VERSION=$(grep '^version = ' pyproject.toml | sed 's/version = "\(.*\)"/\1/')
+VERSION=$(grep '^version = ' $PROJECT_ROOT/pyproject.toml | sed 's/version = "\(.*\)"/\1/')
 
 echo "WARNING: This will build, push to Harbor, and deploy to namespace: $NAMESPACE"
 echo "Version: v$VERSION"
-read -p "Continue? (y/N) " -n 1 -r
-echo
+read -p "Continue? (y/N) " -r
 if [[ ! $REPLY =~ ^[Yy]$ ]]; then
     echo "Cancelled"
     exit 1
@@ -31,16 +30,20 @@ docker push harbor.tawksic.com/coral/api:latest
 docker push harbor.tawksic.com/coral/jenkins:latest
 
 echo "[4/5] Deploying to K8s namespace: $NAMESPACE..."
-kubectl apply -f $PROJECT_ROOT/k8s/ -n $NAMESPACE
+# Order matters here, use kustomization.yaml or helm charts for this later
+kubectl apply -f $PROJECT_ROOT/k8s/secrets.yaml -n $NAMESPACE
+kubectl apply -f $PROJECT_ROOT/k8s/service.yaml -n $NAMESPACE
+kubectl apply -f $PROJECT_ROOT/k8s/deployment.yaml -n $NAMESPACE
 
 echo "[5/5] Waiting for deployment..."
 kubectl rollout status deployment coral -n $NAMESPACE --timeout=60s
 
 echo "Production deployment complete"
 echo ""
-echo "Starting port forward on http://localhost:$LOCAL_PORT"
-echo "Press Ctrl+C to stop"
-echo ""
 
-kubectl port-forward service/coral $LOCAL_PORT:80 -n $NAMESPACE
+kubectl port-forward service/coral $LOCAL_PORT:80 -n $NAMESPACE > /dev/null 2>&1 &
+PF_PID=$!
+echo "Port-forward running in background (PID: $PF_PID)"
+echo "Access at: http://localhost:$LOCAL_PORT"
+echo "To stop: kill $PF_PID"
 
