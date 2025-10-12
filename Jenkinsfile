@@ -1,7 +1,7 @@
 pipeline {
     agent {
         docker {
-            image 'harbor.tawksic.com/h-webapp/jenkins'
+            image 'harbor.tawksic.com/coral/jenkins:latest'
             registryUrl 'https://harbor.tawksic.com'
             registryCredentialsId 'harbor-credentials'
             alwaysPull true
