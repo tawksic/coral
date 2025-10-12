@@ -1,10 +1,10 @@
 services:
-  webapp:
-    image: harbor.tawksic.com/h-webapp/autoscale-api
+  api:
+    image: harbor.tawksic.com/coral/api:latest
     network_mode: host
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
 
   jenkins:
-    image: harbor.tawksic.com/h-webapp/jenkins
+    image: harbor.tawksic.com/coral/jenkins:latest
     network_mode: host

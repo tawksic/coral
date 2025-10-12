@@ -1,15 +1,15 @@
 FROM python:3.13-slim-bullseye
 
-WORKDIR /opt/app
+WORKDIR /opt
 
 RUN pip install uv==0.8.19
 
 COPY pyproject.toml /opt/pyproject.toml
 COPY uv.lock /opt/uv.lock
 
-RUN uv sync
+RUN uv sync --no-dev
 
 # Purposefully copying code last to avoid previous step's cache invalidation
 COPY app /opt/app
 
-CMD ["uv", "run", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "80"]
+CMD ["/opt/.venv/bin/uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "80"]
