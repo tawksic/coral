@@ -28,16 +28,16 @@ def get_container_memory():
             return None
 
         if usage_bytes is not None and limit_bytes is not None:
-                # Convert bytes to MiB for readability
-                usage_mib = usage_bytes / (1024 * 1024)
-                limit_mib = limit_bytes / (1024 * 1024)
-                percentage = (usage_mib / limit_mib * 100) if limit_mib > 0 else 0
+            # Convert bytes to MiB for readability
+            usage_mib = usage_bytes / (1024 * 1024)
+            limit_mib = limit_bytes / (1024 * 1024)
+            percentage = (usage_mib / limit_mib * 100) if limit_mib > 0 else 0
 
-                return {
-                    'usage_mib': round(usage_mib, 2),
-                    'limit_mib': round(limit_mib, 2),
-                    'percentage': round(percentage, 2)
-                }
+            return {
+                'usage_mib': round(usage_mib, 2),
+                'limit_mib': round(limit_mib, 2),
+                'percentage': round(percentage, 2)
+            }
 
         return None
 
