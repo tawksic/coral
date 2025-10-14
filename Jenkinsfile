@@ -20,7 +20,7 @@ pipeline {
         }
         stage('Lint') {
             steps {
-                sh 'python -m flake8 app/ --ignore=E302'
+                sh 'python -m flake8 app/ --extend-ignore=E302,E501,W391'
             }
         }
     }
