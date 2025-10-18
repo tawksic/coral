@@ -1,11 +1,11 @@
 pipeline {
-    agent {
-        docker {
-            image 'harbor.tawksic.com/coral/jenkins:latest'
-            registryUrl 'https://harbor.tawksic.com'
-            registryCredentialsId 'harbor-credentials'
-            alwaysPull true
-        }
+    agent any
+
+    environment {
+        HARBOR_REGISTRY = 'harbor.tawksic.com'
+        JENKINS_IMAGE = 'coral/jenkins'
+        IMAGE_TAG = "${env.BUILD_NUMBER}-${env.GIT_COMMIT[0..7]}"
+        HARBOR_CREDENTIALS = credentials('harbor-credentials')
     }
 
     triggers {
@@ -18,10 +18,29 @@ pipeline {
                 checkout scm
             }
         }
-        stage('Lint') {
+
+        stage('Build Jenkins Container') {
             steps {
-                sh 'python -m flake8 app/ --extend-ignore=E302,E501,W391'
+                script {
+                    def image = docker.build("${HARBOR_REGISTRY}/${JENKINS_IMAGE}:${IMAGE_TAG}")
+                    docker.withRegistry("https://${HARBOR_REGISTRY}", 'harbor-credentials') {
+                        image.push()
+                        image.push('latest')
+                    }
+                }
             }
+        }
+    }
+
+    post {
+        success {
+            echo 'Jenkins container built and pushed to Harbor.'
+        }
+        failure {
+            echo 'Jenkins container build failed.'
+        }
+        always {
+            cleanWs()
         }
     }
 }
