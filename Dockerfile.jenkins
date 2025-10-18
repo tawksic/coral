@@ -15,8 +15,8 @@ WORKDIR /workspace
 # Copy project files for dependency installation
 COPY pyproject.toml uv.lock ./
 
-# Install dependencies using uv (dev group for CI tools)
-RUN uv sync --group dev
+# Install dependencies using uv (both main and dev dependencies)
+RUN uv sync
 
 # Add uv's virtual environment to PATH
 ENV PATH="/workspace/.venv/bin:$PATH"
