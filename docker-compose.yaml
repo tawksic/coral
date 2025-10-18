@@ -4,7 +4,3 @@ services:
     network_mode: host
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-
-  jenkins:
-    image: harbor.tawksic.com/coral/jenkins:latest
-    network_mode: host
