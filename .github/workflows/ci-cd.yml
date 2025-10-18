@@ -13,6 +13,7 @@ env:
 jobs:
   # Job 1: Run tests and linting on PRs and pushes
   test-and-lint:
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -46,7 +47,7 @@ jobs:
   # Job 2: Build and push containers (only on merge to main)
   build-and-push:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    if: github.event_name == 'push'
 
     steps:
       - name: Checkout code
