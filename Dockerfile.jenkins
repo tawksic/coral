@@ -1,5 +1,22 @@
 FROM python:3.13-alpine
 
-RUN pip install --no-cache-dir \
-flake8 \
-pytest
+# Install system dependencies
+RUN apk add --no-cache \
+    git \
+    docker-cli \
+    curl
+
+# Install uv package manager
+RUN pip install --no-cache-dir uv==0.9.3
+
+# Set working directory
+WORKDIR /workspace
+
+# Copy project files for dependency installation
+COPY pyproject.toml uv.lock ./
+
+# Install dependencies using uv (dev group for CI tools)
+RUN uv sync --group dev
+
+# Add uv's virtual environment to PATH
+ENV PATH="/workspace/.venv/bin:$PATH"
