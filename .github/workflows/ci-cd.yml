@@ -33,10 +33,10 @@ jobs:
         run: docker pull ${{ env.HARBOR_REGISTRY }}/coral/jenkins:latest
 
       - name: Run linter using Jenkins container
-        run: docker run --rm -v $(pwd):/workspace ${{ env.HARBOR_REGISTRY }}/coral/jenkins:latest bash -c "cd /workspace && python -m flake8 app/ --extend-ignore=E302,E501,W391"
+        run: docker run --rm -v $(pwd):/workspace ${{ env.HARBOR_REGISTRY }}/coral/jenkins:latest sh -c "cd /workspace && python -m flake8 app/ --extend-ignore=E302,E501,W391"
 
       - name: Run tests using Jenkins container
-        run: docker run --rm -v $(pwd):/workspace ${{ env.HARBOR_REGISTRY }}/coral/jenkins:latest bash -c "cd /workspace && python -m pytest tests/ -v --tb=short"
+        run: docker run --rm -v $(pwd):/workspace ${{ env.HARBOR_REGISTRY }}/coral/jenkins:latest sh -c "cd /workspace && python -m pytest tests/ -v --tb=short"
 
   # Job 2: Build and push containers (only on merge to main)
   build-and-push:
