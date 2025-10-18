@@ -9,6 +9,8 @@ COPY uv.lock /opt/uv.lock
 
 RUN uv sync --no-dev
 
+# adding this line to test github actions
+
 # Purposefully copying code last to avoid previous step's cache invalidation
 COPY app /opt/app
 
