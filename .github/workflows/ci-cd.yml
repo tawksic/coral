@@ -14,7 +14,7 @@ jobs:
   # Job 1: Run tests and linting on PRs and pushes
   test-and-lint:
     if: github.event_name == 'pull_request'
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -46,7 +46,7 @@ jobs:
 
   # Job 2: Build and push containers (only on merge to main)
   build-and-push:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     if: github.event_name == 'push'
 
     steps:
