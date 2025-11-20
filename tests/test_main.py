@@ -89,32 +89,32 @@ class TestSimulationEndpoints:
     def test_simulation_success(self, mock_simulate):
         mock_simulate.return_value = 5
 
-        response = client.get("/simulate/?time_to_run=10&interval=2")
+        response = client.get("/simulate/?duration=10&delay=2")
         assert response.status_code == 200
         data = response.json()
         assert data["status"] == "done"
         assert data["requests_sent"] == 5
 
-    def test_simulation_validation_time_to_run_too_high(self):
-        response = client.get("/simulate/?time_to_run=31&interval=1")
+    def test_simulation_validation_duration_too_high(self):
+        response = client.get("/simulate/?duration=31&delay=1")
         assert response.status_code == 422  # Validation error
 
-    def test_simulation_validation_time_to_run_too_low(self):
-        response = client.get("/simulate/?time_to_run=0&interval=1")
+    def test_simulation_validation_duration_too_low(self):
+        response = client.get("/simulate/?duration=0&delay=1")
         assert response.status_code == 422  # Validation error
 
-    def test_simulation_validation_interval_too_high(self):
-        response = client.get("/simulate/?time_to_run=10&interval=31")
+    def test_simulation_validation_delay_too_high(self):
+        response = client.get("/simulate/?duration=10&delay=31")
         assert response.status_code == 422  # Validation error
 
-    def test_simulation_validation_interval_too_low(self):
-        response = client.get("/simulate/?time_to_run=10&interval=0")
+    def test_simulation_validation_delay_too_low(self):
+        response = client.get("/simulate/?duration=10&delay=0")
         assert response.status_code == 422  # Validation error
 
     @patch('app.api.routes.simulation.simulate_traffic')
     def test_simulation_default_parameters(self, mock_simulate):
         mock_simulate.return_value = 3
-        response = client.get("/simulate/?time_to_run=1&interval=1")
+        response = client.get("/simulate/?duration=1&delay=1")
         assert response.status_code == 200
         data = response.json()
         assert data["status"] == "done"

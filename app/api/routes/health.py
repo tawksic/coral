@@ -6,7 +6,7 @@ router = APIRouter(tags=["health"])
 
 
 @router.get("/")
-async def hello():
+async def hello_world():
     return {"message": "Hello World"}
 
 
