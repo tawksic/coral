@@ -2,14 +2,14 @@ from fastapi import APIRouter, Query
 
 from app.services.traffic_simulator import simulate_traffic
 
-router = APIRouter(prefix="/simulate", tags=["simulation"])
+router = APIRouter(tags=["simulation"])
 
 
-@router.get("/")
+@router.get("/simulate")
 async def simulate(
-    time_to_run: int = Query(gt=0, le=30),
-    interval: int = Query(gt=0, le=30)
+    duration: int = Query(gt=0, le=30),
+    delay: int = Query(gt=0, le=30)
 ):
-    request_sent = await simulate_traffic(time_to_run, interval)
+    request_sent = await simulate_traffic(duration, delay)
     return {"status": "done", "requests_sent": request_sent}
 

@@ -1,4 +1,13 @@
+# Python
 .python-version
 __pycache__
+
+# Go
+scripts/go/go
+scripts/go/*.exe
+
+# Docker
 docker-compose.override.yaml
+
+# Kubernetes
 secrets.yaml
