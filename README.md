@@ -7,8 +7,7 @@ A non-exhaustive list of the concepts that are in/were in this project are:
 - Github Workflows
 - Jenkins
 - Docker/docker-compose
-- k8s (Kubernetes)
-- minikube/RKE2
+- minikube/k8s/kubernetes (experience with more orchestrations such as RKE2/Rancher, but not implemented here)
 - FastAPI
 - CICD
 - Automated linting/testing
